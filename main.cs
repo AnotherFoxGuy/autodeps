@@ -1,11 +1,7 @@
 // See https://aka.ms/new-console-template for more information
-using System.Reflection;
-using System.Text;
+using System.CommandLine;
+using autodeps.generators;
 using autodeps.models;
-using autodeps.tools;
-using Newtonsoft.Json;
-using Scriban;
-using Scriban.Parsing;
 
 // Console.WriteLine("Hello, World!");
 
@@ -23,10 +19,21 @@ var pkg = new AutodepsPackage
     }
 };
 
-// var temp = EmbededFileLoader.Instance.GetFileContents("templates/conan/conanfile.py.in");
-var temp = EmbededFileLoader.Instance.GetFileContents("templates/vcpkg/portfile.cmake.in");
-// var temp = EmbededFileLoader.Instance.GetFileContents("templates/cmake_meta/pkg.CMakeLists.txt.in");
+var rootCommand = new RootCommand("Generate cpp packages");
 
-var template = Template.Parse(temp);
-var result = template.Render(pkg);
-Console.WriteLine(result);
+var conanGen = new ConanGenerator();
+var conanCmd = new Command("conan", "generate conan pkgs");
+conanCmd.SetHandler(() => conanGen.GeneratePkg("", pkg));
+rootCommand.AddCommand(conanCmd);
+
+var vcpkgGen = new VcpkgGenerator();
+var vcpkgCmd = new Command("vcpkg", "generate vcpkg pkgs");
+vcpkgCmd.SetHandler(() => vcpkgGen.GeneratePkg("", pkg));
+rootCommand.AddCommand(vcpkgCmd);
+
+var cmmGen = new CmakeMetaGenerator();
+var cmmCmd = new Command("cmake_meta", "generate cmake_meta pkgs");
+cmmCmd.SetHandler(() => cmmGen.GeneratePkg("", pkg));
+rootCommand.AddCommand(cmmCmd);
+
+return await rootCommand.InvokeAsync(args);

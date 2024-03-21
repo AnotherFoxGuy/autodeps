@@ -1,6 +1,8 @@
- namespace autodeps.generators;
+using autodeps.models;
 
- interface IGenerator
- {
-     bool GeneratePkg(string filename);
- }
+namespace autodeps.generators;
+
+interface IGenerator
+{
+    bool GeneratePkg(string filename, AutodepsPackage pkg);
+}

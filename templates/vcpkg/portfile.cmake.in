@@ -1,7 +1,55 @@
+
+#--------------------------#
+# Global cmake variables   #
+#--------------------------#
+set(CMAKE_VARS
+{{~ for v in cmake_variables['any'] ~}}
+        -D{{ v.key }}="{{ v.value }}"
+{{~ end ~}}
+)
+
+{{~ if cmake_variables['linux'] ~}}
+#--------------------------#
+# Linux cmake variables    #
+#--------------------------#
+if(UNIX)
+    set(CMAKE_VARS
+        {{~ for v in cmake_variables['linux'] ~}}
+        -D{{ v.key }}="{{ v.value }}"
+        {{~ end ~}}
+    )
+endif(UNIX)
+{{~ end ~}}
+
+{{~ if cmake_variables['windows'] ~}}
+#--------------------------#
+# Windows cmake variables  #
+#--------------------------#
+if(WIN32)
+    set(CMAKE_VARS
+        {{~ for v in cmake_variables['windows'] ~}}
+        -D{{ v.key }}="{{ v.value }}"
+        {{~ end ~}}
+    )
+endif(WIN32)
+{{~ end ~}}
+
+{{~ if cmake_variables['macos'] ~}}
+#--------------------------#
+# MacOS cmake variables    #
+#--------------------------#
+if(APPLE)
+    set(CMAKE_VARS
+        {{~ for v in cmake_variables['macos'] ~}}
+        -D{{ v.key }}="{{ v.value }}"
+        {{~ end ~}}
+    )
+endif(APPLE)
+{{~ end ~}}
 vcpkg_download_distfile(ARCHIVE
     URLS "{{ url }}"
     FILENAME "{{ file_name }}"
-    SHA512 {{ hash }}
+    {{ hash_type }} {{ hash_value }}
 )
 
 vcpkg_extract_source_archive_ex(
@@ -11,12 +59,7 @@ vcpkg_extract_source_archive_ex(
 
 vcpkg_cmake_configure(
     SOURCE_PATH "${SOURCE_PATH}"
-    OPTIONS 
-{{~ for var in cmake_variables ~}}
-    {{~ for v in var.value ~}}
-        -D{{ v.key }}="{{ v.value }}"
-    {{~ end ~}}
-{{~ end ~}}
+    OPTIONS ${CMAKE_VARS}
 )
 
 vcpkg_cmake_install()

@@ -48,4 +48,9 @@ public class AutodepsPackage
     public string CleanName => Name.Replace("-", "");
     [JsonIgnore]
     public string FileName => Url.Split('/').Last();
+
+    [JsonIgnore]
+    public string HashType => Hash.Split(':').First();
+    [JsonIgnore]
+    public string HashValue => Hash.Split(':').Last();
 }

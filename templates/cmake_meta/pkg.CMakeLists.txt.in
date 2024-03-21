@@ -1,14 +1,60 @@
+#--------------------------#
+# Global cmake variables   #
+#--------------------------#
+set(CMAKE_VARS
+{{~ for v in cmake_variables['any'] ~}}
+        -D{{ v.key }}="{{ v.value }}"
+{{~ end ~}}
+)
+
+{{~ if cmake_variables['linux'] ~}}
+#--------------------------#
+# Linux cmake variables    #
+#--------------------------#
+if(UNIX)
+    set(CMAKE_VARS
+        {{~ for v in cmake_variables['linux'] ~}}
+        -D{{ v.key }}="{{ v.value }}"
+        {{~ end ~}}
+    )
+endif(UNIX)
+{{~ end ~}}
+
+{{~ if cmake_variables['windows'] ~}}
+#--------------------------#
+# Windows cmake variables  #
+#--------------------------#
+if(WIN32)
+    set(CMAKE_VARS
+        {{~ for v in cmake_variables['windows'] ~}}
+        -D{{ v.key }}="{{ v.value }}"
+        {{~ end ~}}
+    )
+endif(WIN32)
+{{~ end ~}}
+
+{{~ if cmake_variables['macos'] ~}}
+#--------------------------#
+# MacOS cmake variables    #
+#--------------------------#
+if(APPLE)
+    set(CMAKE_VARS
+        {{~ for v in cmake_variables['macos'] ~}}
+        -D{{ v.key }}="{{ v.value }}"
+        {{~ end ~}}
+    )
+endif(APPLE)
+{{~ end ~}}
+
 ExternalProject_Add(
         {{ name }} 
         URL {{ url }}
         URL_HASH {{ hash }}
         CMAKE_ARGS
+        ${CMAKE_VARS}
         -DCMAKE_INSTALL_PREFIX=${DEPENDENCIES_OUTPUT_DIR}
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
         -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
         -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-        {{ for var in cmake_variables }}
-        -D{{ var.name }}="{{ var.value }}"
-        {{ end }}
 )

@@ -1,5 +1,6 @@
 namespace autodeps.models;
 
-public class AutodepsConfig {
-    
+public class AutodepsConfig
+{
+
 }

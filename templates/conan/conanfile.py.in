@@ -12,25 +12,32 @@ class {{ clean_name }}Conan(ConanFile):
         cmake_layout(self)
 
     def source(self):
-        get(self, url="{{ url }}",  sha256="{{ sha256 }}", strip_root=True)
+        get(self, url="{{ url }}",  {{ hash_type }}="{{ hash_value }}", strip_root=True)
 
     def generate(self):
         tc = CMakeToolchain(self)
-{{~ for var in cmake_variables ~}}
-    {{~ if var.key == 'linux' ~}}
-        if self.settings.os == "Linux":
-    {{~ end ~}}
-    {{~ if var.key == 'windows' ~}}
-        if self.settings.os == "Windows":
-    {{~ end ~}}
-    {{~ for v in var.value ~}}
-        {{~ if var.key == 'any' ~}}
+        {{~ for v in cmake_variables['any'] ~}}
         tc.variables["{{ v.key }}"] = "{{ v.value }}"
-        {{~ else ~}}
+        {{~ end ~}}
+    {{~ if cmake_variables['linux'] ~}}
+        if self.settings.os == "Linux":
+        {{~ for v in cmake_variables['linux'] ~}}
             tc.variables["{{ v.key }}"] = "{{ v.value }}"
-        {{~ end ~}}  
+        {{~ end ~}}
     {{~ end ~}}
-{{~ end ~}}
+    {{~ if cmake_variables['windows'] ~}}
+        if self.settings.os == "Windows":
+        {{~ for v in cmake_variables['windows'] ~}}
+            tc.variables["{{ v.key }}"] = "{{ v.value }}"
+        {{~ end ~}}
+    {{~ end ~}}
+    {{~ if cmake_variables['macos'] ~}}
+        if self.settings.os == "MacOS":
+        {{~ for v in cmake_variables['macos'] ~}}
+            tc.variables["{{ v.key }}"] = "{{ v.value }}"
+        {{~ end ~}}
+    {{~ end ~}}
+
         tc.generate()
 
     def build(self):
