@@ -2,6 +2,8 @@
 using System.CommandLine;
 using autodeps.generators;
 using autodeps.models;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 // Console.WriteLine("Hello, World!");
 
@@ -18,6 +20,10 @@ var pkg = new AutodepsPackage
          { OperatingSystems.windows, new Dictionary<string, string> { {"Windows" , "ON"} } }
     }
 };
+
+// var serializer = new SerializerBuilder().Build();
+// var yaml = serializer.Serialize(pkg);
+// Console.WriteLine(yaml);
 
 var rootCommand = new RootCommand("Generate cpp packages");
 
