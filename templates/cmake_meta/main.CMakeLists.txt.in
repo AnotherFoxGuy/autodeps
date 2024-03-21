@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.20)
+
+project({{ name }} VERSION {{ version }})
+
+include(ExternalProject)
+include(FetchContent)
+
+set(FETCHCONTENT_QUIET FALSE)
+
+set_property(DIRECTORY PROPERTY EP_BASE ${CMAKE_BINARY_DIR})
+
+# Write version file
+file(WRITE "${DEPENDENCIES_OUTPUT_DIR}/version.cmake" "set(DEPENDENCIES_VERSION ${CMAKE_PROJECT_VERSION})")
+
+
+if (UNIX)
+    set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:${DEPENDENCIES_LIB_DIR}/pkgconfig")
+endif ()
+
+
+{{ for lib in libraries }}
+add_subdirectory({{ lib }})
+{{ end }}
