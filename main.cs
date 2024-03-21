@@ -36,4 +36,9 @@ var cmmCmd = new Command("cmake_meta", "generate cmake_meta pkgs");
 cmmCmd.SetHandler(() => cmmGen.GeneratePkg("", pkg));
 rootCommand.AddCommand(cmmCmd);
 
+var flatpakGen = new FlatpakGenerator();
+var flatpakCmd = new Command("flatpak", "generate flatpak pkgs");
+flatpakCmd.SetHandler(() => flatpakGen.GeneratePkg("", pkg));
+rootCommand.AddCommand(flatpakCmd);
+
 return await rootCommand.InvokeAsync(args);

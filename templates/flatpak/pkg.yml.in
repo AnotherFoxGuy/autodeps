@@ -1,0 +1,13 @@
+name: {{ name }}
+buildsystem: cmake
+config-opts:
+{{~ for v in cmake_variables['any'] ~}}
+  - -D{{ v.key }}="{{ v.value }}"
+{{~ end ~}}
+{{~ for v in cmake_variables['linux'] ~}}
+  - -D{{ v.key }}="{{ v.value }}"
+{{~ end ~}}
+sources:
+  - type: archive
+    url: {{ url }}
+    {{ hash_type }}: {{ hash_value }}

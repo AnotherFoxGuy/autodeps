@@ -12,7 +12,6 @@ class EmbededFileLoader
         _assemblyName = Assembly.GetExecutingAssembly().GetName().Name!;
     }
 
-
     public string? GetFileContents(string filename)
     {
         var path = filename.Replace('/', '.');

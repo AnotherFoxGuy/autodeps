@@ -13,11 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>  
-    <EmbeddedResource Include="templates/conan/conanfile.py.in" />  
-    <EmbeddedResource Include="templates/vcpkg/vcpkg.json.in" />  
-    <EmbeddedResource Include="templates/vcpkg/portfile.cmake.in" />  
-    <EmbeddedResource Include="templates/cmake_meta/pkg.CMakeLists.txt.in" />  
     <EmbeddedResource Include="templates/cmake_meta/main.CMakeLists.txt.in" />  
+    <EmbeddedResource Include="templates/cmake_meta/pkg.CMakeLists.txt.in" />  
+    <EmbeddedResource Include="templates/conan/conanfile.py.in" />  
+    <EmbeddedResource Include="templates/flatpak/pkg.yml.in" />  
+    <EmbeddedResource Include="templates/vcpkg/portfile.cmake.in" />  
+    <EmbeddedResource Include="templates/vcpkg/vcpkg.json.in" />  
   </ItemGroup>
 
   <ItemGroup>
