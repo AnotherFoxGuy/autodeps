@@ -7,7 +7,7 @@ namespace autodeps.generators;
 
 class FlatpakGenerator : IGenerator
 {
-    public bool GeneratePkg(string filename, AutodepsPackage pkg)
+    public bool GeneratePkg(string filename, TemplateAutodepsPackage pkg)
     {
         var temp = EmbededFileLoader.Instance.GetFileContents("templates/flatpak/pkg.yml.in");
 

@@ -53,19 +53,18 @@ public class AutodepsPackage
     [JsonProperty("cmake_variables")]
     public Dictionary<OperatingSystems, Dictionary<string, string>>? CMakeVariables { get; set; }
 
-    [YamlIgnore]
-    [JsonIgnore]
+    [YamlMember(Alias = "patch_files")]
+    [JsonProperty("patch_files")]
+    public Dictionary<OperatingSystems, List<string>>? PatchFiles { get; set; }
+}
+
+public class TemplateAutodepsPackage : AutodepsPackage
+{
     public string CleanName => Name.Replace("-", "");
 
-    [YamlIgnore]
-    [JsonIgnore]
     public string FileName => Url.Split('/').Last();
 
-    [YamlIgnore]
-    [JsonIgnore]
     public string HashType => Hash.Split(':').First();
 
-    [YamlIgnore]
-    [JsonIgnore]
     public string HashValue => Hash.Split(':').Last();
 }

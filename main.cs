@@ -1,25 +1,38 @@
 // See https://aka.ms/new-console-template for more information
+
 using System.CommandLine;
 using autodeps.generators;
 using autodeps.models;
+using Nelibur.ObjectMapper;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 // Console.WriteLine("Hello, World!");
 
 
-var pkg = new AutodepsPackage
+var bpkg = new AutodepsPackage
 {
     Name = "fmt",
     Version = "10.2.1",
     Url = "https://github.com/fmtlib/fmt/releases/download/10.2.1/fmt-10.2.1.zip",
     Hash = "sha256:312151a2d13c8327f5c9c586ac6cf7cddc1658e8f53edae0ec56509c8fa516c9",
-    CMakeVariables = new(){
-         { OperatingSystems.any, new Dictionary<string, string> { {"FMT_TEST" , "OFF"} } },
-         { OperatingSystems.linux, new Dictionary<string, string> { {"LINUX" , "ON"} } },
-         { OperatingSystems.windows, new Dictionary<string, string> { {"Windows" , "ON"} } }
+    CMakeVariables = new()
+    {
+        { OperatingSystems.any, new Dictionary<string, string> { { "FMT_TEST", "OFF" } } },
+        { OperatingSystems.linux, new Dictionary<string, string> { { "LINUX", "ON" } } },
+        { OperatingSystems.windows, new Dictionary<string, string> { { "Windows", "ON" } } }
+    },
+    PatchFiles = new()
+    {
+        { OperatingSystems.any, ["XD.patch"] },
+        { OperatingSystems.linux, ["linux.patch"] } ,
+        { OperatingSystems.windows, ["windows.patch"]  }
     }
 };
+
+TinyMapper.Bind<AutodepsPackage, TemplateAutodepsPackage>();
+
+var pkg = TinyMapper.Map<TemplateAutodepsPackage>(bpkg);
 
 // var serializer = new SerializerBuilder().Build();
 // var yaml = serializer.Serialize(pkg);

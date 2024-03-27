@@ -1,3 +1,11 @@
+#------------------------------------------------------------------------------------------#
+# This file has been generated with autodeps (https://github.com/AnotherFoxGuy/autodeps)   #
+# Any changes made in this file will be lost!                                              #                                                                            
+#------------------------------------------------------------------------------------------#
+# Package: {{ name }}    
+# Version: {{ version }}
+
+
 #--------------------------#
 # Global cmake variables   #
 #--------------------------#
@@ -12,7 +20,7 @@ set(CMAKE_VARS
 # Linux cmake variables    #
 #--------------------------#
 if(UNIX)
-    set(CMAKE_VARS
+    set(CMAKE_VARS ${CMAKE_VARS}
         {{~ for v in cmake_variables['linux'] ~}}
         -D{{ v.key }}="{{ v.value }}"
         {{~ end ~}}
@@ -25,7 +33,7 @@ endif(UNIX)
 # Windows cmake variables  #
 #--------------------------#
 if(WIN32)
-    set(CMAKE_VARS
+    set(CMAKE_VARS ${CMAKE_VARS}
         {{~ for v in cmake_variables['windows'] ~}}
         -D{{ v.key }}="{{ v.value }}"
         {{~ end ~}}
@@ -38,7 +46,7 @@ endif(WIN32)
 # MacOS cmake variables    #
 #--------------------------#
 if(APPLE)
-    set(CMAKE_VARS
+    set(CMAKE_VARS ${CMAKE_VARS}
         {{~ for v in cmake_variables['macos'] ~}}
         -D{{ v.key }}="{{ v.value }}"
         {{~ end ~}}
@@ -52,9 +60,5 @@ ExternalProject_Add(
         URL_HASH {{ hash }}
         CMAKE_ARGS
         ${CMAKE_VARS}
-        -DCMAKE_INSTALL_PREFIX=${DEPENDENCIES_OUTPUT_DIR}
-        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
-        -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-        -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+        -DCMAKE_INSTALL_PREFIX=${OUTPUT_DIR}
 )

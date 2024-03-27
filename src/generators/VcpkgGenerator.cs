@@ -6,7 +6,7 @@ namespace autodeps.generators;
 
 class VcpkgGenerator : IGenerator
 {
-    public bool GeneratePkg(string filename, AutodepsPackage pkg)
+    public bool GeneratePkg(string filename, TemplateAutodepsPackage pkg)
     {
         var temp = EmbededFileLoader.Instance.GetFileContents("templates/vcpkg/portfile.cmake.in");
 
@@ -15,6 +15,5 @@ class VcpkgGenerator : IGenerator
         Console.WriteLine(result);
 
         return true;
-
     }
 }

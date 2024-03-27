@@ -8,7 +8,7 @@ namespace autodeps.generators;
 
 class CmakeMetaGenerator : IGenerator
 {
-    public bool GeneratePkg(string filename, AutodepsPackage pkg)
+    public bool GeneratePkg(string filename, TemplateAutodepsPackage pkg)
     {
         var temp = EmbededFileLoader.Instance.GetFileContents("templates/cmake_meta/pkg.CMakeLists.txt.in");
 

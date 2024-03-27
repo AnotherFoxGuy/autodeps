@@ -7,7 +7,7 @@ namespace autodeps.generators;
 
 class ConanGenerator : IGenerator
 {
-    public bool GeneratePkg(string filename, AutodepsPackage pkg)
+    public bool GeneratePkg(string filename, TemplateAutodepsPackage pkg)
     {
         var temp = EmbededFileLoader.Instance.GetFileContents("templates/conan/conanfile.py.in");
 

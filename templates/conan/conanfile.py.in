@@ -1,11 +1,17 @@
-import os
+#------------------------------------------------------------------------------------------#
+# This file has been generated with autodeps (https://github.com/AnotherFoxGuy/autodeps)   #
+# Any changes made in this file will be lost!                                              #
+#------------------------------------------------------------------------------------------#
+# Package: {{ name }}
+# Version: {{ version }}
+
 from conan import ConanFile
-from conan.tools.files import get, collect_libs
+from conan.tools.files import get, collect_libs, patch
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 
 class {{ clean_name }}Conan(ConanFile):
     name = "{{ name }}"
-    version = {{ version }}
+    version = "{{ version }}"
     settings = "os", "compiler", "build_type", "arch"
 
     def layout(self):
@@ -37,10 +43,30 @@ class {{ clean_name }}Conan(ConanFile):
             tc.variables["{{ v.key }}"] = "{{ v.value }}"
         {{~ end ~}}
     {{~ end ~}}
-
         tc.generate()
 
     def build(self):
+        {{~ for p in patch_files['any'] ~}}
+        patch(self, patch_file="{{ p }}")
+        {{~ end ~}}
+    {{~ if patch_files['linux'] ~}}
+        if self.settings.os == "Linux":
+        {{~ for p in patch_files['linux'] ~}}
+            patch(self, patch_file="{{ p }}")
+        {{~ end ~}}
+    {{~ end ~}}
+    {{~ if patch_files['windows'] ~}}
+        if self.settings.os == "Windows":
+        {{~ for p in patch_files['windows'] ~}}
+            patch(self, patch_file="{{ p }}")
+        {{~ end ~}}
+    {{~ end ~}}
+    {{~ if patch_files['macos'] ~}}
+        if self.settings.os == "MacOS":
+        {{~ for p in patch_files['macos'] ~}}
+            patch(self, patch_file="{{ p }}")
+        {{~ end ~}}
+    {{~ end ~}}
         cmake = CMake(self)
         cmake.configure()
         cmake.build()

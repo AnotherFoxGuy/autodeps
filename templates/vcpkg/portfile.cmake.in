@@ -1,3 +1,10 @@
+#------------------------------------------------------------------------------------------#
+# This file has been generated with autodeps (https://github.com/AnotherFoxGuy/autodeps)   #
+# Any changes made in this file will be lost!                                              #
+#------------------------------------------------------------------------------------------#
+# Package: {{ name }}
+# Version: {{ version }}
+
 
 #--------------------------#
 # Global cmake variables   #
@@ -13,7 +20,7 @@ set(CMAKE_VARS
 # Linux cmake variables    #
 #--------------------------#
 if(UNIX)
-    set(CMAKE_VARS
+    set(CMAKE_VARS ${CMAKE_VARS}
         {{~ for v in cmake_variables['linux'] ~}}
         -D{{ v.key }}="{{ v.value }}"
         {{~ end ~}}
@@ -26,7 +33,7 @@ endif(UNIX)
 # Windows cmake variables  #
 #--------------------------#
 if(WIN32)
-    set(CMAKE_VARS
+    set(CMAKE_VARS ${CMAKE_VARS}
         {{~ for v in cmake_variables['windows'] ~}}
         -D{{ v.key }}="{{ v.value }}"
         {{~ end ~}}
@@ -39,13 +46,14 @@ endif(WIN32)
 # MacOS cmake variables    #
 #--------------------------#
 if(APPLE)
-    set(CMAKE_VARS
+    set(CMAKE_VARS ${CMAKE_VARS}
         {{~ for v in cmake_variables['macos'] ~}}
         -D{{ v.key }}="{{ v.value }}"
         {{~ end ~}}
     )
 endif(APPLE)
 {{~ end ~}}
+
 vcpkg_download_distfile(ARCHIVE
     URLS "{{ url }}"
     FILENAME "{{ file_name }}"
